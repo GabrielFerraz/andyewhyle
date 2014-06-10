@@ -106,7 +106,8 @@ Jogador.prototype = {
 
 
 Cena = function(){
-	this.elementos = [new Objeto('diamante', 'assets/diamond.png', 200,300, 32, 28), new Objeto('star', 'assets/star.png', 400, 300, 24, 22)];
+	this.elementos = [new Objeto('diamante', 'assets/diamond.png', 200,300, 32, 28), new Objeto('star', 'assets/star.png', 400, 300, 24, 22),
+					  new Computador('comp','assets/firstaid.png', 500, 300, 32, 32)];
 	this.fundo = null;
 	
 };
@@ -188,7 +189,7 @@ Chao.prototype = {
 
         console.log(pointer.withinGame);
 		
-		if((this.area.isPointInPoly(pointer)) && (pointer.withinGame == true)){
+		if(this.area.isPointInPoly(pointer)){
             console.log(game.jogador.andando);
             console.log(game.jogador);
 			console.log(pointer.y);
@@ -311,3 +312,56 @@ Poligono.prototype = {
     }
 
 };
+
+
+
+
+
+
+
+
+
+Computador = function(nome, caminhoDoSprite, posX, posY, largura, altura){
+	this.nome = nome;
+	this.caminhoDoSprite = caminhoDoSprite;
+	this.x = posX;
+	this.y = posY;
+	this.area = new Poligono([posX, posY, posX, posY + largura, posX + altura, posY + largura, posX + altura, posY]);
+	this.sprite = null;
+};
+
+Computador.prototype = {
+
+	preload: function(){
+		game.engine.load.image(this.nome,this.caminhoDoSprite);
+	},
+
+	create: function(){
+		this.sprite = game.engine.add.sprite(this.x, this.y, this.nome);
+		// this.sprite.anchor.setTo(0.5,0.5);
+	},
+
+	update: function(pointer){
+		if (this.area.isPointInPoly(pointer)) {
+				console.log('computador');
+				Blockly.inject(document.getElementById('blockly'),
+        		{path: './', toolbox: document.getElementById('toolbox'), trashcan: true});
+        		var defaultXml =
+        			'<xml>' +
+        			'<block type="variables_set" id="31" inline="true" x="143" y="36">' +
+						'<field name="VAR">bli</field>' +
+						'<value name="VALUE">' +
+							'<block type="math_number" id="32">' +
+								'<field name="NUM">0</field>' +
+							'</block>' +
+						'</value>' +
+					'</block>' +
+					'</xml>';
+				var xml = Blockly.Xml.textToDom(defaultXml);
+				Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+
+		};
+	}
+
+};
+
