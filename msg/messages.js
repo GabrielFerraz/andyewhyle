@@ -220,12 +220,12 @@ Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = 'If the first value is true, then do the fir
 Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = 'If the first value is true, then do the first block of statements.  Otherwise, if the second value is true, do the second block of statements.  If none of the values are true, do the last block of statements.';
 /// block text - See [https://code.google.com/p/blockly/wiki/IfElse https://code.google.com/p/blockly/wiki/IfElse].
 /// It is recommended, but not essential, that this have text in common with the translation of 'else if'
-Blockly.Msg.CONTROLS_IF_MSG_IF = 'if';
+Blockly.Msg.CONTROLS_IF_MSG_IF = 'se';
 /// block text - See [https://code.google.com/p/blockly/wiki/IfElse https://code.google.com/p/blockly/wiki/IfElse].  The English words "otherwise if" would probably be clearer than "else if", but the latter is used because it is traditional and shorter.
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = 'else if';
 /// block text - See [https://code.google.com/p/blockly/wiki/IfElse https://code.google.com/p/blockly/wiki/IfElse].  The English word "otherwise" would probably be superior to "else", but the latter is used because it is traditional and shorter.
-Blockly.Msg.CONTROLS_IF_MSG_ELSE = 'else';
-Blockly.Msg.CONTROLS_IF_MSG_THEN = Blockly.Msg.CONTROLS_REPEAT_INPUT_DO;
+Blockly.Msg.CONTROLS_IF_MSG_ELSE = 'senao';
+Blockly.Msg.CONTROLS_IF_MSG_THEN = 'entao';
 Blockly.Msg.CONTROLS_IF_IF_TITLE_IF = Blockly.Msg.CONTROLS_IF_MSG_IF;
 /// tooltip - Describes [https://code.google.com/p/blockly/wiki/IfElse#Block_Modification if block modification].
 Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = 'Add, remove, or reorder sections to reconfigure this if block.';
@@ -256,26 +256,26 @@ Blockly.Msg.LOGIC_OPERATION_HELPURL = 'https://code.google.com/p/blockly/wiki/An
 /// tooltip - See [https://en.wikipedia.org/wiki/Logical_conjunction https://en.wikipedia.org/wiki/Logical_conjunction].
 Blockly.Msg.LOGIC_OPERATION_TOOLTIP_AND = 'Return true if both inputs are true.';
 /// block text - See [https://en.wikipedia.org/wiki/Logical_conjunction https://en.wikipedia.org/wiki/Logical_conjunction].
-Blockly.Msg.LOGIC_OPERATION_AND = 'and';
+Blockly.Msg.LOGIC_OPERATION_AND = 'e';
 /// block text - See [https://en.wikipedia.org/wiki/Disjunction https://en.wikipedia.org/wiki/Disjunction].
 Blockly.Msg.LOGIC_OPERATION_TOOLTIP_OR = 'Return true if at least one of the inputs is true.';
 /// block text - See [https://en.wikipedia.org/wiki/Disjunction https://en.wikipedia.org/wiki/Disjunction].
-Blockly.Msg.LOGIC_OPERATION_OR = 'or';
+Blockly.Msg.LOGIC_OPERATION_OR = 'ou';
 
 /// url - Information about logical negation.  The translation of [https://en.wikipedia.org/wiki/Logical_negation https://en.wikipedia.org/wiki/Logical_negation] is recommended if it exists in the target language.
 Blockly.Msg.LOGIC_NEGATE_HELPURL = 'https://code.google.com/p/blockly/wiki/Not';
 /// block text - This is a unary operator that returns ''false'' when the input is ''true'', and ''true'' when the input is ''false''.
 /// \n\nParameters:\n* %1 - the input (which should be either the value "true" or "false")
-Blockly.Msg.LOGIC_NEGATE_TITLE = 'not %1';
+Blockly.Msg.LOGIC_NEGATE_TITLE = 'nao %1';
 /// tooltip - See [https://en.wikipedia.org/wiki/Logical_negation https://en.wikipedia.org/wiki/Logical_negation].
 Blockly.Msg.LOGIC_NEGATE_TOOLTIP = 'Returns true if the input is false.  Returns false if the input is true.';
 
 /// url - Information about the logic values ''true'' and ''false''.  Consider using the translation of [https://en.wikipedia.org/wiki/Truth_value https://en.wikipedia.org/wiki/Truth_value] if it exists in your language.
 Blockly.Msg.LOGIC_BOOLEAN_HELPURL = 'https://code.google.com/p/blockly/wiki/True_False';
 /// block text - The word for the [https://en.wikipedia.org/wiki/Truth_value logical value] ''true''.
-Blockly.Msg.LOGIC_BOOLEAN_TRUE = 'true';
+Blockly.Msg.LOGIC_BOOLEAN_TRUE = 'verdadeiro';
 /// block text - The word for the [https://en.wikipedia.org/wiki/Truth_value logical value] ''false''.
-Blockly.Msg.LOGIC_BOOLEAN_FALSE = 'false';
+Blockly.Msg.LOGIC_BOOLEAN_FALSE = 'falso';
 /// tooltip - Indicates that the block returns either of the two possible [https://en.wikipedia.org/wiki/Truth_value logical values].
 Blockly.Msg.LOGIC_BOOLEAN_TOOLTIP = 'Returns either true or false.';
 

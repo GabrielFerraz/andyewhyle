@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>Teste Andy Whily</title>
     <xml id="toolbox" style="display: none">
-        <block type="controls_if"></block>
+        <block type="math_test"></block>
         <block type="controls_repeat_ext"></block>
         <block type="logic_compare"></block>
         <block type="math_number"></block>
@@ -21,16 +21,31 @@
     <script type="text/javascript" src="js/blocks_compressed.js"></script>
     <script type="text/javascript" src="js/javascript_compressed.js"></script>
     <script type="text/javascript" src="msg/js/en.js"></script>
+    <script type="text/javascript" src="blocks.js"></script>
 
     <style type="text/css">
         body {
             margin: 0;
         }
-        #blockly {
-            float: right;
+        #block {
+            position: absolute;
+            z-index: 1;
         }
         #jogo{
-            float: right;
+            position: absolute;
+            z-index: 9999;
+            height: 601px;
+            width: 801px;
+        }
+        #button{
+            height: 50px;
+            background-color: #fff;
+        }
+        #blockly{
+
+            height: 550px;
+            width: 399px;
+
         }
     </style>
 </head>
@@ -39,8 +54,9 @@
 
 <script type="text/javascript">
 
-    var engine = new Phaser.Game(800, 600, Phaser.AUTO, 'jogo', { preload: preload, create: create, update: update });
+    var engine = new Phaser.Game(800, 600, Phaser.CANVAS, 'jogo', { preload: preload, create: create, update: update });
     game.setEngine(engine);
+
 
     function preload() {
         
@@ -57,30 +73,14 @@
 
     }
 
-    function addTween(tween){
-        var t = tween;
-    }
 
-    function runCode(){
-        // Generate JavaScript code and run it.
-
-        window.LoopTrap = 1000;
-        console.log('run');
-        Blockly.JavaScript.INFINITE_LOOP_TRAP =
-            'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-        var code = Blockly.JavaScript.workspaceToCode();
-        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-        try {
-            eval(code);
-        } catch (e) {
-            alert(e);
-        }
-    }
 
 </script>
-<div id='blockly' style="height: 600px; width: 600px;"></div>
-<div id="jogo" style="height: 601px; width: 801px;"></div>
-<button onclick="runCode()">Run JavaScript</button>
+<div id='block' >
+    <div id='button' ></div>
+    <div id='blockly'></div>
+</div>
+<div id="jogo"></div></div>
 
 
    
