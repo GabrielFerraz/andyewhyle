@@ -36,6 +36,7 @@ Game.prototype = {
 	
 	update: function(){
 		this.jogador.update();
+		this.cena.update();
     	this.engine.input.onDown.add(this.notifyObservers, this);
 	},
 
@@ -49,7 +50,7 @@ Game.prototype = {
 		this.mouseClickY = pointer.y;
         for (var i = this.cena.elementos.length - 1; i >= 0; i--) {
 
-            this.cena.elementos[i].update(pointer);
+            this.cena.elementos[i].notify(pointer);
         };
 	},
 
@@ -67,8 +68,11 @@ Game.prototype = {
 		for(var i = this.cena.elementos.length - 1; i>=0; i--){
 			if(this.cena.elementos[i] instanceof Computador){
 				tween = this.cena.elementos[i].tweenQueue.shift();
-				tween.delay(0);
-				tween.start();
+				if(tween){
+					console.log('tween com algo');
+					tween.delay(0);
+					tween.start();
+				}
 			}
 		}
 		//------------------//
@@ -158,6 +162,7 @@ Cena = function(elementos, elementosSobre, cenario){
 	
 };
 
+
 Cena.prototype = {
 	
 	preload: function(){
@@ -179,6 +184,11 @@ Cena.prototype = {
 	},
 	
 	update: function(){	
+		for(var i = this.elementos.length - 1; i>=0; i--){
+			if(this.elementos[i] instanceof Computador){
+				this.elementos[i].update();
+			}
+		}
 	},
 
 	removeObjeto: function(nome){
@@ -253,7 +263,7 @@ Chao.prototype = {
 
 	},
 	
-	update: function(pointer){
+	notify: function(pointer){
 
         console.log(pointer.withinGame);
 		
@@ -316,7 +326,7 @@ Objeto.prototype = {
 		this.area = new Poligono([this.x, this.y, this.x, this.y + this.largura, this.x + this.altura, this.y + this.largura, this.x + this.altura, this.y])
 	},
 
-	update: function(pointer){
+	notify: function(pointer){
 		if (this.area.isPointInPoly(pointer)&& (game.engine.physics.arcade.distanceToXY(game.jogador.sprite, this.x, this.y) < 150)) {
 				console.log('objeto');
 				game.cena.removeObjeto(this.nome);
@@ -424,8 +434,10 @@ Computador = function(nome, caminhoDoSprite, posX, posY, largura, altura){
 	this.posSub = {x:5,y:1};
 	this.colidiu = false;
 	this.sub = null;
+	this.aux = null;
 	this.tweenQueue = [];
 	this.tweenColisao = null;
+	this.timer = false;
 	};
 
 
@@ -434,8 +446,8 @@ Computador.prototype = {
 	preload: function(){
 		game.engine.load.image(this.nome,this.caminhoDoSprite);
 		game.engine.load.image('pc_sub','assets/pc_sub.png');
-		game.engine.load.image('sub','assets/sub.png');
-		game.engine.load.image('colide','assets/colide.png');
+		game.engine.load.spritesheet('sub','assets/sub.png',50,50);
+		game.engine.load.spritesheet('colide','assets/colide.png', 50,50);
 	},
 
 	create: function(){
@@ -443,11 +455,39 @@ Computador.prototype = {
 		// this.sprite.anchor.setTo(0.5,0.5);
 	},
 
-	update: function(pointer){
+	update: function(){
+		if(this.colidiu && this.tweenQueue.length == 0 && !game.engine.tweens.isTweening(this.sub)){
+			console.log('entrou update');
+//			this.sub.kill();
+            this.sub.reset(450+(this.posSub['x']*50), 135+(this.posSub['y']*50));
+			this.sub.animations.play('colide');
+//			this.aux = game.engine.add.sprite(450+(this.posSub['x']*50), 135+(this.posSub['y']*50), 'colide');
+			game.engine.time.events.add(2000,function(){
+				this.timer = true;
+			},this);
+			if(this.timer){
+//				this.aux.kill();
+//				this.aux.reset(2000,2000);
+//				this.aux.z = -100289;
+//				console.log(this.aux);
+                this.sub.animations.play('submarino');
+				this.sub.reset(700,185);
+				this.posSub = {x:5,y:1};
+				this.colidiu = false;
+                this.timer = false;
+			}
+			console.log(this.posSub['y']);
+		}
+	},
+
+	notify: function(pointer){
 		if (this.area.isPointInPoly(pointer)&& (game.engine.physics.arcade.distanceToXY(game.jogador.sprite, this.x, this.y) < 200)) {
 				console.log('computador');
 				this.pc_sub = game.engine.add.sprite(401,0,'pc_sub');
 				this.sub = game.engine.add.sprite(700,185,'sub');
+                this.sub.animations.add('submarino',[0]);
+                this.sub.animations.add('colide',[1]);
+                this.sub.animations.add('fim',[2]);
 				Blockly.updateToolbox(this.newTree);
 				var xml = Blockly.Xml.textToDom(this.defaultXml);
 				Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
@@ -472,21 +512,7 @@ Computador.prototype = {
 	},
 
 	colisao: function(){
-		timer = new Phaser.Timer(game.engine,true);
-		timer.add(1000,function(){
-			this.sub.kill();
-			this.colide = game.engine.add.sprite(450+(this.posSub['x']*50),135+(this.posSub['y']*50),'colide');
-			c
-		},this);
-		timer.start();
-		this.tweenColisao = game.engine.add.tween(this.colide).to({ x: 450+(this.posSub['x']*50), y: 135+(this.posSub['y']*50) },1000, Phaser.Easing.Linear.None,false,2000);
-		this.tweenColisao.onComplete.addOnce(function(){
-			this.sub.reset(700,185);
-			this.posSub = {x:5,y:1};
-			this.colide.kill();
-			this.colidiu = false;
-		}, this);
-		this.tweenQueue.push(this.tweenColisao);
+		
 	},
 
 	move: function(direcao){
@@ -502,7 +528,7 @@ Computador.prototype = {
 					this.tweenQueue.push(tween);
 				}else{
 					if(this.caminho[this.posSub['y']][this.posSub['x']] == 1){
-						this.colisao();
+						this.colidiu = true;
 					}
 				}
 			}else if(direcao == 'baixo'){
@@ -519,7 +545,7 @@ Computador.prototype = {
 						tween = this.tweenQueue[this.tweenQueue.length-1];
 						tween.onComplete.removeAll();
 						tween.onComplete.addOnce(function(){
-							this.colisao();
+							this.colidiu = true;
 						},this);
 					}
 				}
@@ -535,10 +561,11 @@ Computador.prototype = {
 					this.tweenQueue.push(tween);
 				}else{
 					if(this.caminho[this.posSub['y']][this.posSub['x']] == 1){
+                        console.log('colidiu');
 						tween = this.tweenQueue[this.tweenQueue.length-1];
 						tween.onComplete.removeAll();
 						tween.onComplete.addOnce(function(){
-							this.colisao();
+							this.colidiu = true;
 						},this);
 					}
 				}
@@ -556,7 +583,7 @@ Computador.prototype = {
 						tween = this.tweenQueue[this.tweenQueue.length-1];
 						tween.onComplete.removeAll();
 						tween.onComplete.addOnce(function(){
-							this.colisao();
+							this.colidiu = true;
 						},this);
 					}
 				}
